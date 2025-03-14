@@ -20,7 +20,7 @@ public class OthelloAIHotello implements IOthelloAI{
 		}
 	}
 	
-	public Position decideMove(GameState s){
+	public Position decideMove(GameState s){	//corresponds to the minimax search algorithm
 		Decision d = maxValue(s, Integer.MAX_VALUE, Integer.MIN_VALUE);
 		return d.move;
 	}
