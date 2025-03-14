@@ -10,8 +10,6 @@
 
 public class OthelloAIHotello implements IOthelloAI{
 
-	private int depth;
-
 	private class Decision {
 		public final int utility;
 		public final Position move;
@@ -23,14 +21,12 @@ public class OthelloAIHotello implements IOthelloAI{
 	}
 	
 	public Position decideMove(GameState s){
-		Decision d = maxValue(s);
-		depth = 0;
+		Decision d = maxValue(s, Integer.MAX_VALUE, Integer.MIN_VALUE);
 		return d.move;
 	}
 
-	private Decision maxValue(GameState s) {
-		depth++;
-		if (s.isFinished() || depth > 20) {
+	private Decision maxValue(GameState s, int alpha, int beta) {
+		if (s.isFinished()) {
 			return new Decision(utility(s), new Position(-1,-1));
 		}
 
@@ -41,17 +37,21 @@ public class OthelloAIHotello implements IOthelloAI{
 			GameState resultState = new GameState(s.getBoard(), s.getPlayerInTurn());
 			resultState.insertToken(move);
 
-			int v2 = minValue(resultState).utility;
+			int v2 = minValue(resultState, alpha, beta).utility;
 			if (v2 > v) {
 				v = v2;
 				maxMove = move;
+				alpha = Math.max(alpha, v);
+			}
+			if (v >= beta) {
+				return new Decision(v, maxMove);
 			}
 		}
 		return new Decision(v, maxMove);
 	}
 
-	private Decision minValue(GameState s) {
-		if (s.isFinished() || depth > 20) {
+	private Decision minValue(GameState s, int alpha, int beta) {
+		if (s.isFinished()) {
 			return new Decision(utility(s), new Position(-1,-1));
 		}
 
@@ -62,10 +62,14 @@ public class OthelloAIHotello implements IOthelloAI{
 			GameState resultState = new GameState(s.getBoard(), s.getPlayerInTurn());
 			resultState.insertToken(move);
 
-			int v2 = maxValue(resultState).utility;
+			int v2 = maxValue(resultState, alpha, beta).utility;
 			if (v2 < v) {
 				v = v2;
 				minMove = move;
+				beta = Math.min(beta, v);
+			}
+			if (v <= alpha) {
+				return new Decision(v, minMove);
 			}
 		}
 		return new Decision(v, minMove);
