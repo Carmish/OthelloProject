@@ -1,7 +1,9 @@
 
 /**
- * A simple OthelloAI-implementation. The method to decide the next move just
- * returns the first legal move that it finds. (Copy of DumAI for now)
+ * A simple OthelloAI-implementation. The method to decide the next move depends on the minimax algorithm,
+ * looking at the possible moves and choosing the move that results in the highest utility (reachable in the range of the depth).
+ * The utility is calculated by counting the number of tokens of the player and the opponent and
+ * returning the difference.
  * @author Carmen Alberte Nielsen & Daniel Sølvsten Millard
  * @version 14.3.2025
  */
