@@ -7,6 +7,7 @@
  * @author Carmen Alberte Nielsen & Daniel Sølvsten Millard
  * @version 14.3.2025
  */
+
 public class OthelloAIHotello implements IOthelloAI{
 
 	private int depth;
@@ -30,11 +31,11 @@ public class OthelloAIHotello implements IOthelloAI{
 	private Decision maxValue(GameState s) {
 		depth++;
 		if (s.isFinished() || depth > 20) {
-			return new Decision(utility(s), null);
+			return new Decision(utility(s), new Position(-1,-1));
 		}
 
 		int v = Integer.MIN_VALUE;
-		Position maxMove = null;
+		Position maxMove = new Position(-1,-1);
 
 		for (Position move : s.legalMoves()) {
 			GameState resultState = new GameState(s.getBoard(), s.getPlayerInTurn());
@@ -51,11 +52,11 @@ public class OthelloAIHotello implements IOthelloAI{
 
 	private Decision minValue(GameState s) {
 		if (s.isFinished() || depth > 20) {
-			return new Decision(utility(s), null);
+			return new Decision(utility(s), new Position(-1,-1));
 		}
 
 		int v = Integer.MAX_VALUE;
-		Position minMove = null;
+		Position minMove = new Position(-1,-1);
 
 		for (Position move : s.legalMoves()) {
 			GameState resultState = new GameState(s.getBoard(), s.getPlayerInTurn());
