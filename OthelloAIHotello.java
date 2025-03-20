@@ -22,16 +22,15 @@ public class OthelloAIHotello implements IOthelloAI{
 	 * All values above 5 easily beats DumAI within the time restrictions up to boards with size 16x16 and likely beyond.
 	 * A depth of 8 likely stays within the time limit on 8x8 board but has some cases nearing 30 seconds.
 	 * A depth of 6 or 7 is a good balance between speed and performance.
-	 * 8 or above is required to beat itself as the starting player on an 8x8 board
 	 */
-	private int maxDepth = 6;
+	private int maxDepth = 7;
 
 	// Tracking the "max" player and the "min" player to evaluate from the correct perspective
 	private int originalPlayer;
 	private int opponent;
 	
 	public Position decideMove(GameState s){
-		// Store the original player when search begins
+		// Establish the player numbers to allow the AI to play as both players
 		originalPlayer = s.getPlayerInTurn();
 		opponent = originalPlayer % 2 + 1;
 		Decision d = maxValue(s, Integer.MIN_VALUE, Integer.MAX_VALUE, maxDepth);
@@ -104,6 +103,9 @@ public class OthelloAIHotello implements IOthelloAI{
 		return new Decision(v, minMove);
 	}
 
+	/**
+	 * Greedy evaluation function that simply returns the difference in tokens between the player and the opponent.
+	 */
 	private int eval(GameState s) {
 		int[] tokens = s.countTokens();
 		int playerTokens = tokens[originalPlayer - 1];
